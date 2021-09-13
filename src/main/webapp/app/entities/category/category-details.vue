@@ -1,27 +1,35 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-10 m-auto">
       <div v-if="category">
-        <h2 class="jh-entity-heading" data-cy="categoryDetailsHeading">
-          <span v-text="$t('newsApp.category.detail.title')">Category</span> {{ category.id }}
-        </h2>
-        <dl class="row jh-entity-details">
-          <dt>
-            <span v-text="$t('newsApp.category.name')">Name</span>
-          </dt>
-          <dd>
-            <span>{{ category.name }}</span>
-          </dd>
-        </dl>
-        <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>
-        </button>
-        <router-link v-if="category.id" :to="{ name: 'CategoryEdit', params: { categoryId: category.id } }" custom v-slot="{ navigate }">
-          <button @click="navigate" class="btn btn-primary">
-            <font-awesome-icon icon="pencil-alt"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.edit')"> Edit</span>
+        <div class="row align-items-center">
+          <button type="submit" v-on:click.prevent="previousState()" class="btn mr-2 align-self-start" data-cy="entityDetailsBackButton">
+            <font-awesome-icon icon="arrow-left"></font-awesome-icon>
           </button>
-        </router-link>
+          <h2 data-cy="categoryDetailsHeading">{{category.name}}</h2>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch" v-for="post in posts" :key="post.id">
+            <post-item :post="post"></post-item>
+          </div>
+        </div>
       </div>
+
+      <div v-if="posts && posts.length > 0">
+          <div class="row justify-content-center">
+            <jhi-item-count :page="page" :total="totalItems" :itemsPerPage="itemsPerPage"></jhi-item-count>
+          </div>
+          <div class="row justify-content-center">
+            <b-pagination
+              size="md"
+              :total-rows="totalItems"
+              v-model="page"
+              :per-page="itemsPerPage"
+              :change="loadPage(page)"
+            ></b-pagination>
+          </div>
+        </div>
     </div>
   </div>
 </template>

@@ -29,6 +29,8 @@ import UserOAuth2Service from '@/entities/user/user.oauth2.service';
 
 import PostService from '@/entities/post/post.service';
 import CategoryService from '@/entities/category/category.service';
+import PostItemComponent from '@/entities/post/post-item.vue';
+import CategoryItemComponent from '@/entities/category/category-item.vue';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
 /* tslint:enable */
@@ -42,6 +44,9 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
+Vue.component('post-item', PostItemComponent);
+Vue.component('category-item', CategoryItemComponent);
+// Vue.component('category-item', CategoryItem);
 const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 

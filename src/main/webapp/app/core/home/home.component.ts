@@ -1,21 +1,29 @@
 import Component from 'vue-class-component';
 import { Inject, Vue } from 'vue-property-decorator';
-import LoginService from '@/account/login.service';
+import PostService from '@/entities/post/post.service';
+import { IPost } from '@/shared/model/post.model';
+import CategoryService from '@/entities/category/category.service';
+import { ICategory } from '@/shared/model/category.model';
 
 @Component
 export default class Home extends Vue {
-  @Inject('loginService')
-  private loginService: () => LoginService;
+  @Inject('postService')
+  private postService: () => PostService;
 
-  public openLogin(): void {
-    this.loginService().openLogin((<any>this).$root);
+  @Inject('categoryService')
+  private categoryService: () => CategoryService;
+
+  public posts: IPost[] = [];
+  public categories: ICategory[] = [];
+
+  public mounted() {
+    this.postService()
+      .retrieve({size: 5})
+      .then(res => this.posts = res.data);
+
+    this.categoryService()
+      .retrieve({includePosts: 5})
+      .then(res => this.categories = res.data);
   }
 
-  public get authenticated(): boolean {
-    return this.$store.getters.authenticated;
-  }
-
-  public get username(): string {
-    return this.$store.getters.account ? this.$store.getters.account.login : '';
-  }
 }

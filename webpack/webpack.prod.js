@@ -10,6 +10,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const jhiUtils = require('./utils.js');
 
 const env = require('../config/prod.env');
@@ -128,6 +129,7 @@ const webpackConfig = webpackMerge(baseWebpackConfig, {
       skipWaiting: true,
       exclude: [/swagger-ui/],
     }),
+    new BundleAnalyzerPlugin({ analyzerMode: 'static' })
   ],
 });
 

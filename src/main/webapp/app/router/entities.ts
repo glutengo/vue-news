@@ -38,8 +38,7 @@ export default [
   {
     path: '/post/:postId/view',
     name: 'PostView',
-    component: PostDetails,
-    meta: { authorities: [Authority.USER] },
+    component: PostDetails
   },
   {
     path: '/category',
@@ -62,8 +61,7 @@ export default [
   {
     path: '/category/:categoryId/view',
     name: 'CategoryView',
-    component: CategoryDetails,
-    meta: { authorities: [Authority.USER] },
+    component: CategoryDetails
   },
   // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
 ];
