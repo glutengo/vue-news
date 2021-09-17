@@ -1,15 +1,17 @@
 export default function buildPaginationQueryOpts(paginationQuery) {
+  const params = new URLSearchParams();
   if (paginationQuery) {
-    let sorts = '';
     if (paginationQuery.sort) {
       for (const idx of Object.keys(paginationQuery.sort)) {
-        if (sorts.length > 0) {
-          sorts += '&';
-        }
-        sorts += 'sort=' + paginationQuery.sort[idx];
+        params.append('sort', paginationQuery.sort[idx]);
       }
-      return `${sorts}&page=${paginationQuery.page}&size=${paginationQuery.size}`;
     }
-    return '';
+    if (paginationQuery.page) {
+      params.append('page', paginationQuery.page);
+    }
+    if (paginationQuery.size) {
+      params.append('size', paginationQuery.size);
+    }
   }
+  return params.toString();
 }

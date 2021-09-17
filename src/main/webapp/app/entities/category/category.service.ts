@@ -21,9 +21,14 @@ export default class CategoryService {
   }
 
   public retrieve(paginationQuery?: any): Promise<any> {
+    const query = new URLSearchParams(buildPaginationQueryOpts(paginationQuery));
+    if (paginationQuery?.includePosts) {
+      query.set('includePosts', paginationQuery.includePosts);
+    }
+    query.set('postExcerptLength', '50');
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(baseApiUrl + `?${query.toString()}`)
         .then(res => {
           resolve(res);
         })
