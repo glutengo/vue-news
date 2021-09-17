@@ -15,7 +15,11 @@ export default class CategoryService {
     return client.query({ query: GetCategoryDocument, variables: { id } }).then(res => toHttpResponse(res).data);
   }
 
-  public retrieve(req?: any): Promise<any> {
+  public retrieve(req: any = { includePosts: false }): Promise<any> {
+    if (req.includePosts) {
+      req.takePosts = req.includePosts;
+      req.includePosts = true;
+    }
     return client
       .query({
         query: GetCategoriesDocument,
