@@ -16,6 +16,10 @@ export default class CategoryService {
   }
 
   public retrieve(req?: any): Promise<any> {
+    if (req?.includePosts) {
+      req.includePosts = true;
+      req.takePosts = req.includePosts;
+    }
     return client
       .query({
         query: GetCategoriesDocument,

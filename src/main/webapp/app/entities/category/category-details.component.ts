@@ -36,7 +36,7 @@ export default class CategoryDetails extends Vue {
 
   public retrievePosts(categoryId) {
     this.postService()
-      .retrieve({page: this.page - 1, size: this.itemsPerPage, category: categoryId})
+      .retrieve({page: this.page - 1, size: this.itemsPerPage, category: parseInt(categoryId, 10)})
       .then(res => {
         this.posts = res.data;
         this.totalItems = Number(res.headers['x-total-count']);
