@@ -1,9 +1,17 @@
 'use strict';
+
+const GraphQLTransformer = require('graphql-typeop/transformers/graphql.transformer');
+
 const path = require('path');
+
 const { merge } = require('webpack-merge');
+
 const { VueLoaderPlugin } = require('vue-loader');
+
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
+
 const vueLoaderConfig = require('./loader.conf');
 
 function resolve(dir) {
@@ -51,8 +59,9 @@ module.exports = merge(
               loader: 'ts-loader',
               options: {
                 appendTsSuffixTo: ['\\.vue$'],
-                happyPackMode: true,
-                transpileOnly: true,
+                getCustomTransformers: program => ({
+                  before: [GraphQLTransformer.default.create(program)],
+                }),
               },
             },
           ],
@@ -95,25 +104,43 @@ module.exports = merge(
             context: './node_modules/swagger-ui-dist/',
             from: '*.{js,css,html,png}',
             to: 'swagger-ui/',
-            globOptions: { ignore: ['**/index.html'] },
+            globOptions: {
+              ignore: ['**/index.html'],
+            },
           },
-          { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui/' },
-          { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
-          { from: './src/main/webapp/content/', to: 'content/' },
-          { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
+          {
+            from: './node_modules/axios/dist/axios.min.js',
+            to: 'swagger-ui/',
+          },
+          {
+            from: './src/main/webapp/swagger-ui/',
+            to: 'swagger-ui/',
+          },
+          {
+            from: './src/main/webapp/content/',
+            to: 'content/',
+          },
+          {
+            from: './src/main/webapp/favicon.ico',
+            to: 'favicon.ico',
+          },
           {
             from: './src/main/webapp/manifest.webapp',
             to: 'manifest.webapp',
+          }, // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
+          {
+            from: './src/main/webapp/robots.txt',
+            to: 'robots.txt',
           },
-          // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
-          { from: './src/main/webapp/robots.txt', to: 'robots.txt' },
         ],
       }),
       new MergeJsonWebpackPlugin({
         output: {
           groupBy: [
-            { pattern: './src/main/webapp/i18n/en/*.json', fileName: './i18n/en.json' },
-            // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
+            {
+              pattern: './src/main/webapp/i18n/en/*.json',
+              fileName: './i18n/en.json',
+            }, // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
           ],
         },
       }),

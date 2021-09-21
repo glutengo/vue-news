@@ -41,7 +41,7 @@ export default class JhiUserManagementComponent extends Vue {
       });
   }
 
-  public loadAll(): void {
+  public loadAll(bypassCache?: boolean): void {
     this.isLoading = true;
 
     this.userManagementService()
@@ -49,6 +49,7 @@ export default class JhiUserManagementComponent extends Vue {
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        bypassCache,
       })
       .then(res => {
         this.isLoading = false;
@@ -62,7 +63,7 @@ export default class JhiUserManagementComponent extends Vue {
   }
 
   public handleSyncList(): void {
-    this.loadAll();
+    this.loadAll(true);
   }
 
   public sort(): any {

@@ -17,7 +17,6 @@ import LogsService from './admin/logs/logs.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
 import ActivateService from './account/activate/activate.service';
 import RegisterService from './account/register/register.service';
-import UserManagementService from '@/admin/user-management/user-management.service';
 import LoginService from './account/login.service';
 import AccountService from './account/account.service';
 
@@ -27,10 +26,13 @@ import TranslationService from '@/locale/translation.service';
 import UserOAuth2Service from '@/entities/user/user.oauth2.service';
 /* tslint:disable */
 
-import PostService from '@/entities/post/post.service';
-import CategoryService from '@/entities/category/category.service';
 import PostItemComponent from '@/entities/post/post-item.vue';
 import CategoryItemComponent from '@/entities/category/category-item.vue';
+import { connectGraphQLCacheWatcher } from '@/shared/config/apollo-client';
+import UserGraphQLService from '@/entities/user/user.gql.service';
+import PostGraphQLService from '@/entities/post/post.gql.service';
+import CategoryGraphQLService from '@/entities/category/category.gql.service';
+
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
 /* tslint:enable */
@@ -84,7 +86,7 @@ new Vue({
     loginService: () => loginService,
     activateService: () => new ActivateService(),
     registerService: () => new RegisterService(),
-    userService: () => new UserManagementService(),
+    userService: () => new UserGraphQLService(),
     healthService: () => new HealthService(),
     configurationService: () => new ConfigurationService(),
     logsService: () => new LogsService(),
@@ -92,11 +94,14 @@ new Vue({
 
     userOAuth2Service: () => new UserOAuth2Service(),
     translationService: () => translationService,
-    postService: () => new PostService(),
-    categoryService: () => new CategoryService(),
+    postService: () => new PostGraphQLService(),
+    categoryService: () => new CategoryGraphQLService(),
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,
   },
   i18n,
   store,
+  created: function () {
+    connectGraphQLCacheWatcher(this);
+  },
 });
