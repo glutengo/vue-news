@@ -30,16 +30,17 @@ export default class Post extends Vue {
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllPosts();
+    this.retrieveAllPosts(true);
   }
 
-  public retrieveAllPosts(): void {
+  public retrieveAllPosts(bypassCache?: boolean): void {
     this.isFetching = true;
 
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
+      bypassCache,
     };
     this.postService()
       .retrieve(paginationQuery)

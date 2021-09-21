@@ -32,9 +32,9 @@
     "test-ci": "npm run lint && npm run jest:update",
     "test:watch": "npm run jest -- --watch",
     "webapp:build": "npm run clean-www && npm run webapp:build:dev",
-    "webapp:build:dev": "npm run webpack -- --config webpack/webpack.dev.js --progress=profile --env stats=minimal",
-    "webapp:build:prod": "npm run webpack -- --config webpack/webpack.prod.js --progress=profile --env stats=minimal",
-    "webapp:dev": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --progress=profile --inline --env stats=normal",
+    "webapp:build:dev": "npm run codegen && npm run webpack -- --config webpack/webpack.dev.js --env stats=minimal",
+    "webapp:build:prod": "npm run codegen && npm run webpack -- --config webpack/webpack.prod.js --progress=profile",
+    "webapp:dev": "concurrently \"npm run codegen:watch\" \"npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --env stats=minimal\"",
     "webapp:prod": "npm run clean-www && npm run webapp:build:prod",
     "webapp:test": "npm run test",
     "webpack-dev-server": "webpack serve",
@@ -43,7 +43,9 @@
     "ci:frontend:test": "npm run ci:frontend:build && npm test",
     "ci:server:await": "echo \"Waiting for server at port $npm_package_config_backend_port to start\" && wait-on http-get://localhost:$npm_package_config_backend_port/management/health && echo \"Server at port $npm_package_config_backend_port started\"",
     "ci:e2e:run": "concurrently -k -s first \"npm run ci:e2e:server:start\" \"npm run e2e:headless\"",
-    "e2e:dev": "concurrently -k -s first \"./mvnw\" \"e2e\""
+    "e2e:dev": "concurrently -k -s first \"./mvnw\" \"e2e\"",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen:watch": "graphql-codegen --config codegen.yml --watch"
   },
   "config": {
     "default_environment": "prod"
@@ -54,6 +56,7 @@
     "not ie <= 8"
   ],
   "dependencies": {
+    "@apollo/client": "3.3.19",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/vue-fontawesome": "2.0.2",
@@ -61,6 +64,8 @@
     "bootstrap": "4.6.0",
     "bootstrap-vue": "2.21.2",
     "dayjs": "1.10.4",
+    "graphql": "15.5.0",
+    "pluralize": "8.0.0",
     "swagger-ui-dist": "3.46.0",
     "vue": "2.6.12",
     "vue-class-component": "7.2.6",
@@ -74,11 +79,16 @@
     "vuex": "3.6.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.21.4",
+    "@graphql-codegen/typescript": "1.22.0",
+    "@graphql-codegen/typescript-operations": "1.17.16",
+    "@graphql-codegen/typescript-react-apollo": "2.3.0",
     "@types/chai": "4.2.11",
     "@types/chai-string": "1.4.2",
     "@types/jest": "26.0.22",
     "@types/mocha": "7.0.2",
     "@types/node": "14.14.37",
+    "@types/pluralize": "0.0.29",
     "@types/selenium-webdriver": "4.0.9",
     "@types/sinon": "9.0.11",
     "@types/vuelidate": "0.7.14",

@@ -51,6 +51,11 @@
     "nativeLanguage": "en",
     "creationTimestamp": 1631516281593,
     "jwtSecretKey": "YTc5MmZlYTAwZWU4ZGVjNmFhODUzYThmZjRkYzVkMjI5M2NkYTdmNjBhNjdlYTM1OWFmY2FhYTJmYmViNGM0MWRhMTNkNWVmOTBlMmI4ZmIyNmU4NzY5NWM4OWRlMWQyZWZhN2I5NTc3YjVmMDBmNTdhZWQwYWFhYThhYTM0ZmU=",
-    "lastLiquibaseTimestamp": 1631516401000
+    "lastLiquibaseTimestamp": 1631516401000,
+    "gql": {
+      "typeDefinition": "GraphQL",
+      "schemaLocation": "server/schema.gql",
+      "endpoint": "/graphql"
+    }
   }
 }
